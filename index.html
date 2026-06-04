@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narxlar — Xo'jalik Do'koni</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EC;
+    --surface: #FFFDF8;
+    --border: #E2DDD4;
+    --text: #1A1714;
+    --muted: #7A756C;
+    --accent: #2D6A4F;
+    --accent-light: #E8F5F0;
+    --tag-bg: #EDE9E0;
+    --shadow: 0 2px 12px rgba(26,23,20,0.07);
+    --radius: 16px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .logo span {
+    color: var(--accent);
+  }
+
+  .item-count {
+    font-size: 13px;
+    color: var(--muted);
+    background: var(--tag-bg);
+    padding: 4px 12px;
+    border-radius: 99px;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  #search:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+  }
+
+  #search::placeholder { color: var(--muted); }
+
+  /* CATEGORY CHIPS */
+  .cats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+  }
+
+  .cat-chip {
+    padding: 6px 16px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .cat-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .cat-chip.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.18s, box-shadow 0.18s;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    background: var(--tag-bg);
+  }
+
+  .card-emoji-wrap {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+  }
+
+  .card-body {
+    padding: 14px 16px 16px;
+  }
+
+  .card-cat {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 5px;
+  }
+
+  .card-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 3px;
+  }
+
+  .card-unit {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-price {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+
+  .card-currency {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 2px;
+  }
+
+  .card-tag {
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 99px;
+    background: var(--tag-bg);
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--muted);
+    display: none;
+  }
+  .empty-icon { font-size: 48px; margin-bottom: 1rem; }
+  .empty p { font-size: 15px; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Do'kon<span>.</span></div>
+  <span class="item-count" id="countBadge">0 ta tovar</span>
+</header>
+
+<main>
+  <div class="search-wrap">
+    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search" placeholder="Tovar qidirish..." oninput="render()">
+  </div>
+
+  <div class="cats" id="cats"></div>
+
+  <p class="section-label" id="sectionLabel">Barcha tovarlar</p>
+  <div class="grid" id="grid"></div>
+
+  <div class="empty" id="empty">
+    <div class="empty-icon">🔍</div>
+    <p>Bunday tovar topilmadi</p>
+  </div>
+</main>
+
+<footer>Oxirgi yangilanish: <span id="lastUpdated"></span></footer>
+
+<script>
+/* ============================================================
+   TOVARLAR RO'YXATI
+   Yangi tovar qo'shish uchun quyidagi massivga qo'shing:
+   {
+     name: "Tovar nomi",
+     price: 15000,        // narxi (so'm)
+     unit: "1 kg",        // o'lchov
+     cat: "Tozalik",      // kategoriya
+     img: "🧴"            // emoji YOKI rasm URL
+   }
+   ============================================================ */
+const items = [
+  { name: "Ariel kir kukuni",       price: 28000,  unit: "900 g",   cat: "Tozalik",   img: "🧺" },
+  { name: "Fairy idish yuvish",     price: 12500,  unit: "500 ml",  cat: "Tozalik",   img: "🫧" },
+  { name: "Domestos",               price: 18000,  unit: "750 ml",  cat: "Tozalik",   img: "🧼" },
+  { name: "Rezina qo'lqop",         price: 7000,   unit: "1 juft",  cat: "Tozalik",   img: "🧤" },
+  { name: "Supurgi (plastik)",      price: 35000,  unit: "dona",    cat: "Uy jihozi", img: "🧹" },
+  { name: "Chelak 10L",             price: 22000,  unit: "dona",    cat: "Uy jihozi", img: "🪣" },
+  { name: "Plastik lagan",          price: 15000,  unit: "dona",    cat: "Uy jihozi", img: "🥣" },
+  { name: "MOP latta to'plami",     price: 42000,  unit: "to'plam", cat: "Uy jihozi", img: "🧻" },
+  { name: "Axlat xalta (qora)",     price: 5000,   unit: "10 dona", cat: "Uy jihozi", img: "🗑️" },
+  { name: "Atir suv (Fresh)",       price: 25000,  unit: "300 ml",  cat: "Havo",      img: "🌸" },
+  { name: "Havo tozalagich sprey",  price: 14000,  unit: "300 ml",  cat: "Havo",      img: "💨" },
+];
+/* ============================================================ */
+
+// ---- RENDER ----
+const LAST = "2025-yil, iyun";
+
+function fmt(n) {
+  return Number(n).toLocaleString('uz-UZ');
+}
+
+function isUrl(s) {
+  return s && (s.startsWith('http') || s.startsWith('/'));
+}
+
+let activecat = "Barchasi";
+
+function getCats() {
+  const all = ["Barchasi", ...new Set(items.map(i => i.cat))];
+  return all;
+}
+
+function buildCats() {
+  const wrap = document.getElementById('cats');
+  wrap.innerHTML = getCats().map(c =>
+    `<button class="cat-chip${c===activecat?' active':''}" onclick="setcat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setcat(c) {
+  activecat = c;
+  buildCats();
+  render();
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const filtered = items.filter(it => {
+    const matchCat = activecat === "Barchasi" || it.cat === activecat;
+    const matchQ = !q || it.name.toLowerCase().includes(q) || it.cat.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  const label = document.getElementById('sectionLabel');
+  const badge = document.getElementById('countBadge');
+
+  badge.textContent = `${filtered.length} ta tovar`;
+  label.textContent = activecat === "Barchasi" ? "Barcha tovarlar" : activecat;
+
+  if (!filtered.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = filtered.map((it, idx) => {
+    const imgBlock = isUrl(it.img)
+      ? `<img class="card-img" src="${it.img}" alt="${it.name}" loading="lazy">`
+      : `<div class="card-emoji-wrap">${it.img || '📦'}</div>`;
+
+    return `<div class="card" style="animation-delay:${idx*40}ms">
+      ${imgBlock}
+      <div class="card-body">
+        <div class="card-cat">${it.cat}</div>
+        <div class="card-name">${it.name}</div>
+        <div class="card-unit">${it.unit}</div>
+        <div class="card-bottom">
+          <div class="card-price">${fmt(it.price)}<span class="card-currency">so'm</span></div>
+          <span class="card-tag">${it.unit}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('lastUpdated').textContent = LAST;
+buildCats();
+render();
+</script>
+</body>
+</html>
